@@ -15,23 +15,36 @@ body{background:var(--dark);color:#fff;font-family:'Montserrat',sans-serif;overf
 #musicBtn:hover{background:rgba(201,169,110,.25)}
 
 /* ENVELOPE */
-#envelopeScreen{position:fixed;inset:0;z-index:10000;background:radial-gradient(ellipse at center,#1a0c08 0%,#0a0404 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.4s ease;user-select:none}
+#envelopeScreen{position:fixed;inset:0;z-index:10000;background:#110608;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:opacity 1.4s ease;user-select:none}
 #envelopeScreen.hide{opacity:0;pointer-events:none}
-.env-scene{position:relative;width:340px;height:240px}
-.env-back{position:absolute;inset:0;background:linear-gradient(170deg,#7a4a2a,#5a3018);border:1px solid rgba(201,169,110,.6);border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 80px rgba(201,132,122,.15),inset 0 1px 0 rgba(255,255,255,.08)}
-.env-tri-l{position:absolute;bottom:0;left:0;width:0;height:0;border-style:solid;border-width:120px 0 0 170px;border-color:transparent transparent transparent #6a3e1e}
-.env-tri-r{position:absolute;bottom:0;right:0;width:0;height:0;border-style:solid;border-width:120px 170px 0 0;border-color:transparent #6a3e1e transparent transparent}
-.env-tri-b{position:absolute;bottom:0;left:0;right:0;height:0;border-style:solid;border-width:0 170px 110px 170px;border-color:transparent transparent #5a3418 transparent}
-.env-flap{position:absolute;top:0;left:0;right:0;height:0;border-style:solid;border-width:120px 170px 0 170px;border-color:#8a5530 transparent transparent transparent;transform-origin:top center;transform:rotateX(0deg);transition:transform 1.1s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;z-index:3}
-.env-flap.open{transform:rotateX(-175deg)}
-.env-letter{position:absolute;top:14px;left:22px;right:22px;height:170px;background:linear-gradient(160deg,#fef9f4,#f5ede4);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.35);transform:translateY(0px);transition:transform 1.1s .5s cubic-bezier(.4,0,.2,1);z-index:2}
-.env-letter.rise{transform:translateY(-90px)}
-.env-letter-name{font-family:'Great Vibes',cursive;font-size:2rem;color:#3a2020;line-height:1.2;text-align:center}
-.env-letter-sub{font-size:.48rem;letter-spacing:.35em;text-transform:uppercase;color:#9a7a6a;margin-top:.5rem}
-.env-seal{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);width:40px;height:40px;background:radial-gradient(circle at 35% 35%,#e0b870,#b08030);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 12px rgba(0,0,0,.4);z-index:4;transition:transform .3s}
-#envelopeScreen:hover .env-seal{transform:translateX(-50%) scale(1.12)}
-.env-hint{margin-top:2.5rem;font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:rgba(201,169,110,.55);animation:hintPulse 2.2s ease-in-out infinite}
-@keyframes hintPulse{0%,100%{opacity:.35}50%{opacity:1}}
+.env-scene{position:relative;width:340px;height:240px;perspective:900px}
+
+/* solid envelope body — no transparency */
+.env-back{position:absolute;inset:0;background:#7a4520;border:1px solid rgba(201,169,110,.55);border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.8),0 0 60px rgba(201,132,122,.12)}
+
+/* bottom V shape — same brown, covers lower half */
+.env-tri-b{position:absolute;bottom:0;left:0;right:0;height:0;border-style:solid;border-width:0 170px 110px 170px;border-color:transparent transparent #5c3010 transparent;z-index:1}
+
+/* left & right side triangles — slightly darker */
+.env-tri-l{position:absolute;top:0;left:0;width:0;height:0;border-style:solid;border-width:240px 0 0 170px;border-color:transparent transparent transparent #6a3a15;z-index:1}
+.env-tri-r{position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:240px 170px 0 0;border-color:transparent #6a3a15 transparent transparent;z-index:1}
+
+/* flap — top triangle, lifts open */
+.env-flap{position:absolute;top:0;left:0;right:0;height:0;border-style:solid;border-width:120px 170px 0 170px;border-color:#8a4e25 transparent transparent transparent;transform-origin:top center;transition:transform 1.2s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;z-index:5}
+.env-flap.open{transform:rotateX(-185deg)}
+
+/* letter — sits inside, hidden behind flap until it opens */
+.env-letter{position:absolute;top:16px;left:24px;right:24px;height:165px;background:linear-gradient(155deg,#fef9f4,#f5ede2);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.4);transform:translateY(5px);transition:transform 1.2s .6s cubic-bezier(.2,.8,.3,1);z-index:2}
+.env-letter.rise{transform:translateY(-100px)}
+.env-letter-name{font-family:'Great Vibes',cursive;font-size:2rem;color:#3a1818;line-height:1.2;text-align:center}
+.env-letter-sub{font-size:.48rem;letter-spacing:.35em;text-transform:uppercase;color:#9a7060;margin-top:.5rem}
+
+/* wax seal */
+.env-seal{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:42px;height:42px;background:radial-gradient(circle at 35% 35%,#e8c060,#b08028);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.5);z-index:6;transition:transform .3s}
+#envelopeScreen:hover .env-seal{transform:translateX(-50%) scale(1.1)}
+
+.env-hint{margin-top:2.8rem;font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:rgba(201,169,110,.5);animation:hintPulse 2.2s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.3}50%{opacity:.9}}
 
 /* STARS */
 #starCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
@@ -329,24 +342,17 @@ setInterval(mkPetal,850);
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// MUSIC — Google Drive direct stream
-const audioEl = new Audio();
-// Convert Drive share link to direct stream URL
-audioEl.src = 'https://drive.google.com/uc?export=download&id=16LH4tE8R8Swkj73lqPD2db9ALSptGBhk';
+// MUSIC — Google Drive direct
+const audioEl = new Audio('https://drive.google.com/uc?export=download&id=16LH4tE8R8Swkj73lqPD2db9ALSptGBhk');
 audioEl.loop = true;
-audioEl.volume = 0.5;
+audioEl.volume = 0.45;
 const mBtn = document.getElementById('musicBtn');
 let musicOn = false;
 
 function startMusic(){
-  audioEl.play().then(()=>{
-    musicOn = true;
-    mBtn.textContent = '♫';
-    document.getElementById('ytFrame'); // no longer needed
-  }).catch(e => console.log('Audio blocked:', e));
+  audioEl.play().then(()=>{ musicOn=true; mBtn.textContent='♫'; }).catch(e=>console.log('Audio blocked:',e));
 }
 function toggleMusic(){
-  if(!musicOn){ startMusic(); return; }
   if(audioEl.paused){ audioEl.play(); musicOn=true; mBtn.textContent='♫'; }
   else { audioEl.pause(); musicOn=false; mBtn.textContent='♪'; }
 }
