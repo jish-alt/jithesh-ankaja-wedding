@@ -92,6 +92,12 @@ body{background:var(--cream);color:#3a1a1a;font-family:'Montserrat',sans-serif;o
 
 /* hearts canvas */
 #heartsCanvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+#floatingHeartsCanvas{
+  position:fixed;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+}
 @keyframes hintPulse{0%,100%{opacity:.3}50%{opacity:.9}}
 
 /* ══════════════════════════════
@@ -224,7 +230,7 @@ body{background:var(--cream);color:#3a1a1a;font-family:'Montserrat',sans-serif;o
 </style>
 </head>
 <body>
-
+<canvas id="floatingHeartsCanvas"></canvas>
 <!-- ══ CURTAIN OPENING ══ -->
 <div id="openingScreen" onclick="openCurtain()">
   <canvas id="heartsCanvas"></canvas>
@@ -396,7 +402,66 @@ body{background:var(--cream);color:#3a1a1a;font-family:'Montserrat',sans-serif;o
   }
   drawHearts();
 })();
+// ── GLOWING HEARTS throughout website ──
+(function(){
+  const canvas = document.getElementById('floatingHeartsCanvas');
+  const ctx = canvas.getContext('2d');
+  let hearts = [];
 
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['#ff9aa2','#f7b7c3','#ffd1dc','#c9847a','#c9a96e'];
+  const shapes = ['♥','♡','💗','💕'];
+
+  function spawnHeart(){
+    hearts.push({
+      x: Math.random() * canvas.width,
+      y: canvas.height + 30,
+      size: Math.random() * 18 + 10,
+      speed: Math.random() * 0.7 + 0.35,
+      drift: (Math.random() - 0.5) * 0.6,
+      opacity: Math.random() * 0.35 + 0.25,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      shape: shapes[Math.floor(Math.random() * shapes.length)],
+      glow: Math.random() * 14 + 8
+    });
+  }
+
+  let timer = 0;
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    timer++;
+    if(timer % 12 === 0) spawnHeart();
+
+    hearts = hearts.filter(h => h.y > -50);
+
+    hearts.forEach(h => {
+      h.y -= h.speed;
+      h.x += h.drift;
+
+      ctx.save();
+      ctx.globalAlpha = h.opacity;
+      ctx.font = `${h.size}px serif`;
+      ctx.fillStyle = h.color;
+      ctx.shadowColor = h.color;
+      ctx.shadowBlur = h.glow;
+      ctx.fillText(h.shape, h.x, h.y);
+      ctx.restore();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
 // ── CURTAIN OPEN ──
 let opened = false;
 function openCurtain(){
