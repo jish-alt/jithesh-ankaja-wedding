@@ -387,17 +387,21 @@ function openCurtain(){
   setTimeout(()=>{document.getElementById('openingScreen').classList.add('hide');startMusic();},1600);
 }
 
-// ── MUSIC — Google Drive ──
-const audioEl=new Audio('https://drive.google.com/uc?export=download&id=16LH4tE8R8Swkj73lqPD2db9ALSptGBhk');
-audioEl.loop=true;audioEl.volume=0.45;
-const mBtn=document.getElementById('musicBtn');
-let musicOn=false;
+// ── MUSIC ──
+// Upload your MP3 to GitHub alongside index.html and use: new Audio('./sita-kalyanam.mp3')
+// OR use Dropbox: change ?dl=0 to ?raw=1 at the end of the share link
+// Google Drive direct streaming is blocked by CORS — it won't work
+const audioEl = new Audio('./sita-kalyanam.mp3'); // <-- replace with your actual filename or URL
+audioEl.loop = true;
+audioEl.volume = 0.45;
+const mBtn = document.getElementById('musicBtn');
+let musicOn = false;
 function startMusic(){
-  audioEl.play().then(()=>{musicOn=true;mBtn.textContent='♫';}).catch(e=>console.log('Audio:',e));
+  audioEl.play().then(()=>{ musicOn=true; mBtn.textContent='♫'; mBtn.style.color='var(--wine)'; }).catch(e=>console.log('Audio:',e));
 }
 function toggleMusic(){
-  if(audioEl.paused){audioEl.play();musicOn=true;mBtn.textContent='♫';}
-  else{audioEl.pause();musicOn=false;mBtn.textContent='♪';}
+  if(audioEl.paused){ audioEl.play(); musicOn=true; mBtn.textContent='♫'; }
+  else{ audioEl.pause(); musicOn=false; mBtn.textContent='♪'; }
 }
 
 // ── PERSONAL GREETING ──
