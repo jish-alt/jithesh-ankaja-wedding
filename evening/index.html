@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>An Evening With Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#c9a84c;--gold-l:#e8d5a3;--gold-g:rgba(201,168,76,0.12);
+  --cream:#f5efe6;--cream-d:rgba(245,239,230,0.65);--bg:#090909;
+}
+body{background:var(--bg);color:var(--cream);font-family:'Montserrat',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;opacity:.028;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;}
+
+#pts{position:fixed;inset:0;pointer-events:none;z-index:0}
+.pt{position:absolute;width:1.5px;height:1.5px;background:var(--gold);border-radius:50%;opacity:0;animation:up linear infinite}
+@keyframes up{0%{transform:translateY(100vh);opacity:0}10%{opacity:.5}90%{opacity:.2}100%{transform:translateY(-10vh);opacity:0}}
+
+main{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:70px 28px 60px;display:flex;flex-direction:column;align-items:center;gap:44px}
+
+.fade{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease}
+.fade.in{opacity:1;transform:none}
+
+.orn{display:flex;align-items:center;gap:14px;width:100%}
+.orn-line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
+.orn-dot{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 4px var(--gold)}50%{box-shadow:0 0 14px var(--gold),0 0 28px var(--gold-g)}}
+
+/* greeting */
+.greeting{text-align:center}
+.dear{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--gold-l);letter-spacing:1px;margin-bottom:4px}
+.guest{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,5vw,2.3rem);font-weight:300;color:var(--cream);letter-spacing:2px}
+
+/* hero */
+.hero{text-align:center}
+.label{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:16px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,7vw,3.8rem);font-weight:300;font-style:italic;line-height:1.15;animation:shimmer 5s ease-in-out infinite}
+@keyframes shimmer{0%,100%{text-shadow:0 0 30px rgba(201,168,76,.1)}50%{text-shadow:0 0 60px rgba(201,168,76,.3)}}
+
+/* body text */
+.body-text{text-align:center;font-size:15px;line-height:2;color:var(--cream-d);max-width:500px}
+
+/* arrival */
+.arrival{text-align:center;font-size:13px;letter-spacing:.5px;color:var(--gold-l);border-top:1px solid rgba(201,168,76,.2);border-bottom:1px solid rgba(201,168,76,.2);padding:16px 32px;line-height:2}
+.arrival em{font-style:italic}
+
+/* details card — first version style */
+.card{width:100%;background:linear-gradient(135deg,#1a1a1a,#111);border:1px solid rgba(201,168,76,.25);border-radius:4px;padding:40px 36px;text-align:center;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(201,168,76,.06),transparent 60%);pointer-events:none}
+.couple-names{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,5vw,2.6rem);font-weight:300;color:var(--gold-l);letter-spacing:2px;margin-bottom:28px;animation:shimmer 5s ease-in-out infinite}
+.couple-names .amp{font-style:italic;color:var(--gold);font-size:1.1em}
+.divider{width:50px;height:1px;background:var(--gold);margin:0 auto 28px;opacity:.5}
+
+.detail-row{display:flex;align-items:flex-start;gap:14px;text-align:left;margin-bottom:18px}
+.detail-row:last-child{margin-bottom:0}
+.d-icon{color:var(--gold);font-size:11px;min-width:14px;margin-top:3px}
+.d-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:4px}
+.d-value{font-size:14px;color:var(--cream);line-height:1.6}
+.d-sub{font-size:11px;color:var(--cream-d);margin-top:2px}
+
+/* venue link */
+.venue-link{color:var(--cream);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .3s}
+.venue-link:hover{color:var(--gold-l)}
+.venue-link svg{opacity:.6;flex-shrink:0;transition:opacity .3s}
+.venue-link:hover svg{opacity:1}
+
+/* action buttons */
+.actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border:1px solid rgba(201,168,76,.35);background:transparent;color:var(--gold-l);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:300;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .3s;text-decoration:none}
+.btn:hover{background:rgba(201,168,76,.08);border-color:var(--gold);color:var(--gold)}
+.btn svg{flex-shrink:0}
+
+/* personal message */
+.personal{width:100%;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.2);border-left:3px solid var(--gold);border-radius:2px;padding:26px 30px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.9;color:var(--cream-d);display:none}
+.personal .p-name{display:block;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--gold-l);margin-bottom:10px;font-style:normal;letter-spacing:1px}
+.personal .p-sign{display:block;margin-top:14px;font-size:13px;color:var(--gold);opacity:.8}
+
+/* see you soon */
+.seeyou{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.1rem,3vw,1.35rem);color:rgba(245,239,230,.4);letter-spacing:1px}
+
+/* privacy */
+.privacy{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,239,230,.35);text-align:center;line-height:2;margin-top:-16px}
+.privacy span{color:rgba(201,168,76,.5)}
+
+/* calendar modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:#141414;border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:32px;max-width:340px;width:90%;text-align:center;display:flex;flex-direction:column;gap:18px}
+.modal h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--gold-l)}
+.modal p{font-size:12px;color:var(--cream-d);line-height:1.8}
+.modal-btns{display:flex;flex-direction:column;gap:10px}
+.modal .btn{justify-content:center;font-size:10px}
+.modal-close{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,239,230,.3);cursor:pointer;margin-top:4px;background:none;border:none}
+.modal-close:hover{color:var(--cream-d)}
+</style>
+</head>
+<body>
+
+<div id="pts"></div>
+
+<main>
+
+  <div class="orn fade"><div class="orn-line"></div><div class="orn-dot"></div><div class="orn-line"></div></div>
+
+  <!-- Greeting (URL-driven) -->
+  <div class="greeting fade" id="greetingBlock" style="display:none">
+    <p class="dear">Dear</p>
+    <p class="guest" id="guestName"></p>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero fade">
+    <p class="label">Just the People We Love</p>
+    <h1>The Evening<br/>After</h1>
+  </div>
+
+  <!-- Body -->
+  <p class="body-text fade">
+    A small gathering, an open heart, and people we couldn't imagine this night without. This circle is small, and you are in it. This is a very small, private gathering — just the ones closest to our hearts.
+  </p>
+
+  <!-- Arrival -->
+  <div class="arrival fade">
+    We kindly request you to join us between <em>6:00 PM and 6:30 PM</em><br/>
+    so we may begin the evening together.
+  </div>
+
+  <!-- Details card -->
+  <div class="card fade">
+    <div class="couple-names">Jithesh <span class="amp">&</span> Ankaja</div>
+    <div class="divider"></div>
+
+    <div class="detail-row">
+      <div class="d-icon">◇</div>
+      <div>
+        <div class="d-label">Date</div>
+        <div class="d-value">Sunday, 14 June 2026</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="d-icon">◇</div>
+      <div>
+        <div class="d-label">Time</div>
+        <div class="d-value">6:00 PM – 8:30 PM</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="d-icon">◇</div>
+      <div>
+        <div class="d-label">Venue</div>
+        <div class="d-value">
+          <a class="venue-link" href="https://share.google/cRiKYCY6wETZ3R86N" target="_blank" rel="noopener">
+            JAJIS Q Cafe Event Hall, Ashramam, Kollam
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions fade">
+    <button class="btn" onclick="document.getElementById('calOverlay').classList.add('open')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Add to Calendar
+    </button>
+    <a class="btn" href="https://share.google/cRiKYCY6wETZ3R86N" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Get Directions
+    </a>
+  </div>
+
+  <!-- Personal message (shown if ?guest= in URL) -->
+  <div class="personal fade" id="personalMsg">
+    <span class="p-name" id="pName"></span>
+    <span id="pText">We could not imagine this evening without you. Your warmth and love have meant the world to us, and we are truly grateful to have you by our side as we begin this new chapter.</span>
+    <span class="p-sign">With all our love, Jithesh &amp; Ankaja 🤍</span>
+  </div>
+
+  <p class="seeyou fade">See you soon — we mean it.</p>
+
+  <div class="orn fade"><div class="orn-line"></div><div class="orn-dot"></div><div class="orn-line"></div></div>
+
+  <p class="privacy fade"><span>✦</span> &nbsp;This page is personal — please do not share this link&nbsp; <span>✦</span></p>
+
+</main>
+
+<!-- Calendar modal -->
+<div class="overlay" id="calOverlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <h3>Save the Date</h3>
+    <p>Add to your calendar with a reminder the day before so you don't miss the evening.</p>
+    <div class="modal-btns">
+      <a class="btn" id="gcalBtn" href="#" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Google Calendar
+      </a>
+      <a class="btn" id="icsBtn" href="#" download="evening-with-jithesh-ankaja.ics">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Apple / Other (.ics)
+      </a>
+    </div>
+    <button class="modal-close" onclick="document.getElementById('calOverlay').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<script>
+// Particles
+const c=document.getElementById('pts');
+for(let i=0;i<35;i++){
+  const p=document.createElement('div');p.className='pt';
+  p.style.left=Math.random()*100+'vw';
+  p.style.animationDuration=(10+Math.random()*14)+'s';
+  p.style.animationDelay=(Math.random()*14)+'s';
+  c.appendChild(p);
+}
+
+// Fade observer
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.fade').forEach((el,i)=>{
+  el.style.transitionDelay=(i*.12)+'s';obs.observe(el);
+});
+
+// Guest name from URL
+const params=new URLSearchParams(window.location.search);
+const guest=params.get('to');
+const msg=params.get('msg');
+if(guest){
+  document.getElementById('guestName').textContent=guest;
+  document.getElementById('greetingBlock').style.display='block';
+  const pm=document.getElementById('personalMsg');
+  document.getElementById('pName').textContent='Dear '+guest+',';
+  if(msg) document.getElementById('pText').textContent=msg;
+  pm.style.display='none';
+}
+
+// Calendar links
+// Event: 14 Jun 2026, 18:00–20:30 IST (UTC+5:30 → 12:30–15:00 UTC)
+const START='20260614T123000Z', END='20260614T150000Z';
+const TITLE=encodeURIComponent('An Evening with Jithesh & Ankaja');
+const DETAILS=encodeURIComponent('An intimate reception gathering.\nVenue: JAJIS Q Cafe Event Hall, Ashramam, Kollam');
+const LOC=encodeURIComponent('JAJIS Q Cafe Event Hall, Ashramam, Kollam');
+
+document.getElementById('gcalBtn').href=
+  `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${TITLE}&dates=${START}/${END}&details=${DETAILS}&location=${LOC}&trp=false`;
+
+// ICS with 1-day-before reminder
+const ics=[
+  'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding//EN',
+  'BEGIN:VEVENT',
+  'DTSTART:'+START,'DTEND:'+END,
+  'SUMMARY:An Evening with Jithesh & Ankaja',
+  'DESCRIPTION:An intimate reception gathering.',
+  'LOCATION:JAJIS Q Cafe Event Hall\\, Ashramam\\, Kollam',
+  'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY',
+  'DESCRIPTION:Reminder: Evening with Jithesh & Ankaja tomorrow at 6 PM',
+  'END:VALARM',
+  'END:VEVENT','END:VCALENDAR'
+].join('\r\n');
+const blob=new Blob([ics],{type:'text/calendar'});
+document.getElementById('icsBtn').href=URL.createObjectURL(blob);
+</script>
+</body>
+</html>
